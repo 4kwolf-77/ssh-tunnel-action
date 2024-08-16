@@ -13,5 +13,4 @@ jobs:
       uses: joshlarsen/ssh-tunnel-action@main
       with:
         timeout: 6h
-        ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
-        ngrok_token: ${{ secrets.NGROK_TOKEN }}
+        ngrok_token: ${{ secrets.NGROK_AUTH_TOKEN }}
