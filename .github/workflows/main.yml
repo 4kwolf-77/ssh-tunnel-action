@@ -1,16 +1,24 @@
-name: SSH Tunnel
+name: CI
 on: push
 
 jobs:
+
   deploy:
-    name: Set up tunnel
-    runs-on: ubuntu-20.04
+    name: Docker container with Ngrok tunnel
+    runs-on: ubuntu-latest
+    needs: cancel
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
-    - name: Setup tunnel
-      uses: joshlarsen/ssh-tunnel-action@main
+    
+    - name: Run container
+      run: docker-compose up -d 
+    
+    - uses: luisboto/ngrok-tunnel-action@<VERSION>
       with:
         timeout: 6h
-        ngrok_token: ${{ secrets.NGROK_AUTH_TOKEN }}
+        port: 8080
+        ngrok_authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}
+        tunnel_type: http
+        save_url_to_filename: tunnelURL.md
